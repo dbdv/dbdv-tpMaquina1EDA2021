@@ -21,19 +21,20 @@ int contadorExistentes = 0;
 
 void menu_LSO();
 void menu_LSOBI();
-void ingresar(Articulo articulos[], Articulo aIngresar);
-void eliminar(Articulo articulos[]);
+void ingresar(Articulo articulos[], Articulo aIngresar, int posicion);
+void eliminar(Articulo articulos[], int posicion);
 void buscarLSO(Articulo articulos[], char aBuscar[], int *exito, int *posicion);
 void buscarLSO_Binario(Articulo articulos[], char aBuscar[], int *exito, int *posicion);
 void consultar(Articulo articulos[], int posicion);
+
 /*
  * 
  */
-int main() {        
-        
+int main() {
+
     Articulo inventario[250];
     init(inventario);
-    
+
     /*int opcion;
     
     do{
@@ -56,108 +57,132 @@ int main() {
     return 0;
 }
 
-void menu_LSO(Articulo inventario[]){
+void menu_LSO(Articulo inventario[]) {
     int opcion, cant_aux, posicion, exito;
     float precio_aux;
     Articulo art_aux;
     init(&art_aux);
     char codigos_aux [8];
     char textos_aux [N];
-    
-    
-    do{
-        
-    do{
-        printf("MENU LSO: Seleccione la operacion\n");
-        printf("1: Ingresar un articulo.\n2: Eliminar un articulo\n3: Consultar por un articulo\n4: Consultar existencia de articulo.\n5: Precargar archivos.\n6: Mostrar inventario.\n7: Atras");
-        scanf("%d",&opcion);
-    }while(opcion<1 || opcion>7);
-    
-    printf("%d",opcion);
 
-    switch(opcion){
-        case 7: 
-            printf("Fin\n");
-            break;
-        
-        case 1:
-            if(contadorExistentes == 250){
-                printf("El inventario esta lleno, ya no se pueden ingresar mas articulos.\n");
-            }else{
-            printf("Ingrese el codigo del articulo: ");
-            scanf("%s", codigos_aux);
-            carga_Cod(&art_aux, codigos_aux);
-            
-            printf("Ingrese la marca del articulo: ");
-            scanf("%s", textos_aux);
-            carga_Marca(&art_aux, textos_aux);
-            
-            printf("Ingrese una descripcion para el articulo: ");
-            scanf("%s", textos_aux);
-            carga_Descripcion(&art_aux, textos_aux);
-            
-            printf("Ingrese el tipo articulo: ");
-            scanf("%s", textos_aux);
-            carga_TipoArticulo(&art_aux, textos_aux);
-            
-            printf("Ingrese la cantidad de articulos: ");
-            scanf("%i", &cant_aux);
-            carga_Existentes(&art_aux, cant_aux);
-           
-            printf("Ingrese el precio del articulo: ");
-            scanf("%f", &precio_aux);
-            carga_Precio(&art_aux, precio_aux);
-            
-            buscarLSO(inventario, mostrar_Cod(art_aux), &exito, &posicion);
-            if(exito){
-                printf("El articulo que intenta ingresar ya se encuentra cargado.\n");
-            }else{
-                ingresar(inventario, art_aux);
-                contadorExistentes++;
-            }
-            }
-            break;
-            
-        case 2:
-             break;
-            
-        case 3:
-            break;
-            
-        case 4:
-            break;
-            
-        case 5:
-            break;
-            
-        case 6:
-            break;
-            
+
+    do {
+
+        do {
+            printf("MENU LSO: Seleccione la operacion\n");
+            printf("1: Ingresar un articulo.\n2: Eliminar un articulo\n3: Consultar por un articulo\n4: Consultar existencia de articulo.\n5: Precargar archivos.\n6: Mostrar inventario.\n7: Atras");
+            scanf("%d", &opcion);
+        } while (opcion < 1 || opcion > 7);
+
+        printf("%d", opcion);
+
+        switch (opcion) {
+            case 7:
+                printf("Fin\n");
+                break;
+
+            case 1:
+                if (contadorExistentes == 250) {
+                    printf("El inventario esta lleno, ya no se pueden ingresar mas articulos.\n");
+                } else {
+                    printf("Ingrese el codigo del articulo: ");
+                    scanf("%s", codigos_aux);
+                    carga_Cod(&art_aux, codigos_aux);
+
+                    printf("Ingrese la marca del articulo: ");
+                    scanf("%s", textos_aux);
+                    carga_Marca(&art_aux, textos_aux);
+
+                    printf("Ingrese una descripcion para el articulo: ");
+                    scanf("%s", textos_aux);
+                    carga_Descripcion(&art_aux, textos_aux);
+
+                    printf("Ingrese el tipo articulo: ");
+                    scanf("%s", textos_aux);
+                    carga_TipoArticulo(&art_aux, textos_aux);
+
+                    printf("Ingrese la cantidad de articulos: ");
+                    scanf("%i", &cant_aux);
+                    carga_Existentes(&art_aux, cant_aux);
+
+                    printf("Ingrese el precio del articulo: ");
+                    scanf("%f", &precio_aux);
+                    carga_Precio(&art_aux, precio_aux);
+
+                    buscarLSO(inventario, mostrar_Cod(art_aux), &exito, &posicion);
+                    if (exito) {
+                        printf("El articulo que intenta ingresar ya se encuentra cargado.\n");
+                    } else {
+                        ingresar(inventario, art_aux, posicion);
+                        contadorExistentes++;
+                    }
+                }
+                break;
+
+            case 2:
+
+                if (contadorExistentes == 0) {
+                    printf("El inventario esta vacio, por lo que no hay articulos para dar de baja.\n");
+                } else {
+                    printf("Ingrese el codigo del articulo a eliminar: ");
+                    scanf("%s", codigos_aux);
+                    //primero chequeamos que el articulo que se quiere eliminar se encuentre en el arreglo
+                    buscarLSO(inventario, codigos_aux, &exito, &posicion);
+
+                    if (exito) {
+                        eliminar(inventario, posicion);
+                    } else {
+                        printf("El articulo que intenta dar de baja no se encuentra en el inventario.\n");
+                    }
+                }
+
+                break;
+
+            case 3:
+                break;
+
+            case 4:
+                break;
+
+            case 5:
+                break;
+
+            case 6:
+                break;
+
+        }
+    } while (opcion != 7);
+}
+
+void menu_LSOBI() {
+
+}
+
+void ingresar(Articulo inventario[], Articulo aIngresar, int posicion) {
+
+    //va al final y pone en el primer espacio vacio el ultimo elemento y despues empieza a reemplazar desde atras
+    for (int i = contadorExistentes - 1; i > posicion; i--) {
+        inventario[i] = inventario[i - 1];
     }
-}while(opcion != 7);
+
+    inventario[posicion] = aIngresar;
 }
 
-void menu_LSOBI(){
-    
+void eliminar(Articulo articulos[], int posicion) {
+    for (int i = posicion; i < contadorExistentes; i++) {
+        articulos[i] = articulos[i + 1];
+    }
 }
 
-void ingresar(Articulo articulos[], Articulo aIngresar){
-    
+void buscarLSO(Articulo articulos[], char aBuscar[], int *exito, int *posicion) {
+
 }
 
-void eliminar(Articulo articulos[]){
-    
+void buscarLSO_Binario(Articulo articulos[], char aBuscar[], int *exito, int *posicion) {
+
 }
 
-void buscarLSO(Articulo articulos[], char aBuscar[],  int *exito, int *posicion){
-    
-}
+void consultar(Articulo articulos[], int posicion) {
 
-void buscarLSO_Binario(Articulo articulos[], char aBuscar[], int *exito, int *posicion){
-    
-}
 
-void consultar(Articulo articulos[], int posicion){
-    
-    
 }
