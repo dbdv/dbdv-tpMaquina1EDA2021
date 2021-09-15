@@ -161,7 +161,8 @@ void menu_LSOBI() {
 void ingresar(Articulo inventario[], Articulo aIngresar, int posicion) {
 
     //va al final y pone en el primer espacio vacio el ultimo elemento y despues empieza a reemplazar desde atras
-    for (int i = contadorExistentes - 1; i > posicion; i--) {
+    int i;
+    for (i = contadorExistentes - 1; i > posicion; i--) {
         inventario[i] = inventario[i - 1];
     }
 
@@ -169,7 +170,8 @@ void ingresar(Articulo inventario[], Articulo aIngresar, int posicion) {
 }
 
 void eliminar(Articulo articulos[], int posicion) {
-    for (int i = posicion; i < contadorExistentes; i++) {
+    int i;
+    for (i = posicion; i < contadorExistentes; i++) {
         articulos[i] = articulos[i + 1];
     }
 }
